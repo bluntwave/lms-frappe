@@ -11,17 +11,6 @@
                 {{ frappe.utils.flt(avg_rating, frappe.get_system_settings("float_precision") or 3) }}
             </div>
 
-
-            <div class="avg-rating-stars">
-                <div class="rating">
-                    {% for i in [1, 2, 3, 4, 5] %}
-                    <svg class="icon icon-lg {% if i <= frappe.utils.ceil(avg_rating) %} star-click {% endif %}" data-rating="{{ i }}">
-                        <use href="#icon-star"></use>
-                    </svg>
-                    {% endfor %}
-                </div>
-            </div>
-
             <div class="course-meta"> {{ reviews | length }} {{ _("ratings") }} </div>
             <!--
 
@@ -73,13 +62,6 @@
                         <div class="frappe-timestamp course-meta" data-timestamp="{{ review.creation }}">
                             {{ frappe.utils.pretty_date(review.creation) }}
                         </div>
-                    </div>
-                    <div class="rating">
-                        {% for i in [1, 2, 3, 4, 5] %}
-                            <svg class="icon icon-md {% if i <= review.rating %} star-click {% endif %}" data-rating="{{ i }}">
-                                <use href="#icon-star"></use>
-                            </svg>
-                        {% endfor %}
                     </div>
                 </div>
             </div>

@@ -68,18 +68,6 @@
         {% endif %}
     </div>
 
-    {% if not course.upcoming %}
-    <div class="avg-rating-stars">
-        <div class="rating">
-            {% for i in [1, 2, 3, 4, 5] %}
-            <svg class="icon icon-lg {% if i <= frappe.utils.ceil(avg_rating) %} star-click {% endif %}" data-rating="{{ i }}">
-                <use href="#icon-star"></use>
-            </svg>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
-
     <div class="mt-2">
         <div class="bold-heading">{{ _("Instructors") }}:</div>
         {% for instructor in get_instructors(course.name) %}
