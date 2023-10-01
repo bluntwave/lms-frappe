@@ -265,9 +265,6 @@ input[type=checkbox] {
 .submit-review {
   width: 100px;
 }
-.rating .star-click {
-  --star-fill: #74808B;
-}
 .custom-checkbox {
   display: flex;
   align-items: center;

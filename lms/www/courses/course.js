@@ -5,14 +5,6 @@ frappe.ready(() => {
 		show_review_dialog(e);
 	});
 
-	$(".icon-rating").click((e) => {
-		highlight_rating(e);
-	});
-
-	$("#submit-review").click((e) => {
-		submit_review(e);
-	});
-
 	$("#certification").click((e) => {
 		create_certificate(e);
 	});
@@ -43,49 +35,6 @@ const hide_wrapped_mentor_cards = () => {
 const show_review_dialog = (e) => {
 	e.preventDefault();
 	$("#review-modal").modal("show");
-};
-
-const highlight_rating = (e) => {
-	var rating = $(e.currentTarget).attr("data-rating");
-	$(".icon-rating").removeClass("star-click");
-	$(".icon-rating").each((i, elem) => {
-		if (i <= rating - 1) {
-			$(elem).addClass("star-click");
-		}
-	});
-};
-
-const submit_review = (e) => {
-	e.preventDefault();
-	let rating = $(".rating-field").children(".star-click").length;
-	let review = $(".review-field").val();
-	if (!rating) {
-		$(".error-field").text("Please provide a rating.");
-		return;
-	}
-	frappe.call({
-		method: "lms.lms.doctype.lms_course_review.lms_course_review.submit_review",
-		args: {
-			rating: rating,
-			review: review,
-			course: decodeURIComponent($(e.currentTarget).attr("data-course")),
-		},
-		callback: (data) => {
-			if (data.message == "OK") {
-				$(".review-modal").modal("hide");
-				frappe.show_alert(
-					{
-						message: __("Review submitted."),
-						indicator: "green",
-					},
-					3
-				);
-				setTimeout(() => {
-					window.location.reload();
-				}, 1000);
-			}
-		},
-	});
 };
 
 const create_certificate = (e) => {

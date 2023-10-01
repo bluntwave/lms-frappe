@@ -5,7 +5,6 @@ from frappe import _
 from frappe.core.doctype.user.user import User
 from frappe.utils import cint, escape_html, random_string
 from frappe.website.utils import is_signup_disabled
-from lms.lms.utils import get_average_rating
 from frappe.website.utils import cleanup_page_name
 from frappe.model.naming import append_number_if_name_exists
 from lms.widgets import Widgets
@@ -114,7 +113,6 @@ def get_enrolled_courses():
 		course.enrollment_count = frappe.db.count(
 			"LMS Enrollment", {"course": course.name, "member_type": "Student"}
 		)
-		course.avg_rating = get_average_rating(course.name) or 0
 		progress = cint(membership.progress)
 		if progress < 100:
 			in_progress.append(course)
@@ -169,7 +167,6 @@ def get_authored_courses(member=None, only_published=True):
 		detail.enrollment_count = frappe.db.count(
 			"LMS Enrollment", {"course": detail.name, "member_type": "Student"}
 		)
-		detail.avg_rating = get_average_rating(detail.name) or 0
 		course_details.append(detail)
 
 	course_details.sort(key=lambda x: x.enrollment_count, reverse=True)

@@ -203,50 +203,6 @@ def get_students(course, batch=None):
 
 	return frappe.get_all("LMS Enrollment", filters, ["member"])
 
-
-def get_average_rating(course):
-	ratings = [review.rating for review in get_reviews(course)]
-	if not len(ratings):
-		return None
-	return sum(ratings) / len(ratings)
-
-
-def get_reviews(course):
-	reviews = frappe.get_all(
-		"LMS Course Review",
-		{"course": course},
-		["review", "rating", "owner", "creation"],
-		order_by="creation desc",
-	)
-	out_of_ratings = frappe.db.get_all(
-		"DocField", {"parent": "LMS Course Review", "fieldtype": "Rating"}, ["options"]
-	)
-	out_of_ratings = (len(out_of_ratings) and out_of_ratings[0].options) or 5
-	for review in reviews:
-		review.rating = review.rating * out_of_ratings
-		review.owner_details = frappe.db.get_value(
-			"User", review.owner, ["name", "username", "full_name", "user_image"], as_dict=True
-		)
-
-	return reviews
-
-
-def get_sorted_reviews(course):
-	rating_count = rating_percent = frappe._dict()
-	keys = ["5.0", "4.0", "3.0", "2.0", "1.0"]
-	for key in keys:
-		rating_count[key] = 0
-
-	reviews = get_reviews(course)
-	for review in reviews:
-		rating_count[cstr(review.rating)] += 1
-
-	for key in keys:
-		rating_percent[key] = rating_count[key] / len(reviews) * 100
-
-	return rating_percent
-
-
 def is_certified(course):
 	certificate = frappe.get_all(
 		"LMS Certificate", {"member": frappe.session.user, "course": course}

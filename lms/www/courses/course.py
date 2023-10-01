@@ -9,7 +9,6 @@ from lms.lms.utils import (
 	is_certified,
 	is_instructor,
 	redirect_to_courses_list,
-	get_average_rating,
 )
 
 
@@ -34,7 +33,6 @@ def get_context(context):
 		context.membership = None
 	else:
 		set_course_context(context, course_name)
-	context.avg_rating = get_average_rating(context.course.name)
 
 
 def set_course_context(context, course_name):
